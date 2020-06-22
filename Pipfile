@@ -5,6 +5,7 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+gunicorn = "*"
 
 [dev-packages]
 autoflake = "==1.3.1"
