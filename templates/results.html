@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calibration!</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
+  </head>
+  <body>
+    <div class="results_card">
+      <div class="summary">
+        <p>{{ results.fraction_correct|percentage }}% of your estimates captured the true value.</p>
+        <p>This result suggests you may be
+          {% if results.fraction_correct < 0.9 %}
+          an overconfident
+          {% elif results.fraction_correct > 0.9 %}
+          an underconfident
+          {% else %}
+          a well calibrated
+          {% endif %}
+            estimator.
+        </p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Your estimate</th>
+            <th>Actual value</th>
+            <th>Good estimate?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in results.estimates %}
+          <tr>
+            <td class="q">{{ r.q }}</td>
+            <td>{{ r.low|number }} to {{ r.high|number }}</td>
+            <td>{{ r.a|number }}</td>
+            <td>{% if r.a < r.low %}Too high{% elif r.a <= r.high %}Yes{% else %}Too low{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

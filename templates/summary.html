@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calibration!</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
+  </head>
+  <body>
+
+    <div class="results_card">
+      <div class="summary">
+        <p>{{ extremes.fraction_correct|percentage }}% of the combined
+        estimates captured the true value, combining people's
+        estimates by min(low) and max(high).</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Combined estimate</th>
+            <th>Actual value</th>
+            <th>Good estimate?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in extremes.estimates %}
+          <tr>
+            <td class="q">{{ r.q }}</td>
+            <td>{{ r.low|number }} to {{ r.high|number }}</td>
+            <td>{{ r.a|number }}</td>
+            <td>{% if r.a < r.low %}Too high{% elif r.a <= r.high %}Yes{% else %}Too low{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="results_card">
+      <div class="summary">
+        <p>{{ means.fraction_correct|percentage }}% of the combined
+        estimates captured the true value, combining people's
+        estimates by mean(low) and mean(high).</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Combined estimate</th>
+            <th>Actual value</th>
+            <th>Good estimate?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in means.estimates %}
+          <tr>
+            <td class="q">{{ r.q }}</td>
+            <td>{{ r.low|number }} to {{ r.high|number }}</td>
+            <td>{{ r.a|number }}</td>
+            <td>{% if r.a < r.low %}Too high{% elif r.a <= r.high %}Yes{% else %}Too low{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>

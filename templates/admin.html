@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calibration!</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
+  </head>
+  <body>
+    <div class="results_card">
+      <h1>Quizes</h1>
+      <ul>
+        {% for q in quizes %}
+        <li><a href="/q/{{q}}">{{q}}</a></li>
+        {% endfor %}
+      </ul>
+
+      <h1>Question sets</h1>
+      <ul>
+        {% for s in sets %}
+        <li><a href="/new/{{s}}">{{s}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>
