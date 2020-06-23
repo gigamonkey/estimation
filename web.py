@@ -86,7 +86,8 @@ def logout():
 @app.route("/admin")
 def admin():
     sets = sorted(p.stem for p in question_sets.glob("*.json"))
-    quizes = sorted(p.name for p in quizdir.glob("*-*"))
+    quiz_dirs = sorted(p.name for p in quizdir.glob("*-*"))
+    quizes = { n: quiz_result_files(n) for n in quiz_dirs }
     return render_template("admin.html", sets=sets, quizes=quizes)
 
 
@@ -144,7 +145,7 @@ def done(name):
 
 @app.route("/s/<name>")
 def summary(name):
-    files = sorted(p for p in (quizdir / name).glob("*.json") if p.name != "quiz.json")
+    files = quiz_result_files(name)
     combined = combined_estimates(files)
     extremes = generate_results(None, None, [combined_extremes(e) for e in combined])
     means = generate_results(None, None, [combined_mean(e) for e in combined])
@@ -281,6 +282,9 @@ def save_results(r):
 def load_results(name, user_id):
     with open(results_file(name, user_id)) as f:
         return json.load(f)
+
+def quiz_result_files(name):
+    return sorted(p for p in (quizdir / name).glob("*.json") if p.name != "quiz.json")
 
 
 def create_quiz(question_set):
