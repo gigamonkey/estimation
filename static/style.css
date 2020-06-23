@@ -85,12 +85,18 @@ div.results_card {
     background: #dde;
 }
 
-div.summary p {
-    padding-bottom: 1em;
-    font-size: 24px;
+div.summary {
     text-align: center;
 }
 
+div.summary p {
+    padding-bottom: 1em;
+    font-size: 24px;
+}
+
+div.summary h1 {
+    font-size: 36px;
+}
 p.question {
     font-size: 150%;
     text-align: center;

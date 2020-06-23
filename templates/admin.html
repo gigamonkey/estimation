@@ -10,7 +10,7 @@
       <h1>Quizes</h1>
       <ul>
         {% for q in quizes %}
-        <li><a href="/q/{{q}}">{{q}}</a></li>
+        <li><a href="/q/{{q}}">{{q}}</a> (<a href="/s/{{q}}">summary</a>)</li>
         {% endfor %}
       </ul>
 

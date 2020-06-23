@@ -9,54 +9,30 @@
 
     <div class="results_card">
       <div class="summary">
-        <p>{{ extremes.fraction_correct|percentage }}% of the combined
-        estimates captured the true value, combining people's
-        estimates by min(low) and max(high).</p>
+        <h1>Wisdom of crowds?</h1>
+        <p>Extremes: {{ extremes.fraction_correct|percentage }} /
+        Average bounds: {{ means.fraction_correct|percentage }}</p>
       </div>
       <table>
         <thead>
           <tr>
             <th>Question</th>
-            <th>Combined estimate</th>
             <th>Actual value</th>
-            <th>Good estimate?</th>
+            <th>Extreme range</th>
+            <th>Average range</th>
+            <th>Extreme range good?</th>
+            <th>Average range good?</th>
           </tr>
         </thead>
         <tbody>
-          {% for r in extremes.estimates %}
+          {% for e, m in zip(extremes.estimates, means.estimates) %}
           <tr>
-            <td class="q">{{ r.q }}</td>
-            <td>{{ r.low|number }} to {{ r.high|number }}</td>
-            <td>{{ r.a|number }}</td>
-            <td>{% if r.a < r.low %}Too high{% elif r.a <= r.high %}Yes{% else %}Too low{% endif %}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="results_card">
-      <div class="summary">
-        <p>{{ means.fraction_correct|percentage }}% of the combined
-        estimates captured the true value, combining people's
-        estimates by mean(low) and mean(high).</p>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Combined estimate</th>
-            <th>Actual value</th>
-            <th>Good estimate?</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for r in means.estimates %}
-          <tr>
-            <td class="q">{{ r.q }}</td>
-            <td>{{ r.low|number }} to {{ r.high|number }}</td>
-            <td>{{ r.a|number }}</td>
-            <td>{% if r.a < r.low %}Too high{% elif r.a <= r.high %}Yes{% else %}Too low{% endif %}</td>
+            <td class="q">{{ e.q }}</td>
+            <td>{{ e.a|number }}</td>
+            <td>{{ e.low|number }} to {{ e.high|number }}</td>
+            <td>{{ m.low|number }} to {{ m.high|number }}</td>
+            <td>{% if e.a < e.low %}Too high{% elif e.a <= e.high %}Yes{% else %}Too low{% endif %}</td>
+            <td>{% if m.a < m.low %}Too high{% elif m.a <= m.high %}Yes{% else %}Too low{% endif %}</td>
           </tr>
           {% endfor %}
         </tbody>

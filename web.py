@@ -37,6 +37,7 @@ words = load_words("words.txt")
 # Jinja filters
 #
 
+app.jinja_env.globals.update(zip=zip)
 
 @app.template_filter("number")
 def format_number(n):
@@ -58,7 +59,7 @@ def format_input_number(n):
 
 @app.template_filter("percentage")
 def format_percentage(n):
-    return round(100 * n)
+    return f"{round(100 * n)}%"
 
 
 #
@@ -140,9 +141,10 @@ def done(name):
 def summary(name):
     files = sorted(p for p in (quizdir / name).glob("*.json") if p.name != "quiz.json")
     combined = combined_estimates(files)
-    means = generate_results(None, None, [combined_mean(e) for e in combined])
     extremes = generate_results(None, None, [combined_extremes(e) for e in combined])
-    return render_template("summary.html", extremes=extremes, means=means)
+    means = generate_results(None, None, [combined_mean(e) for e in combined])
+    zipped = zip(extremes, means)
+    return render_template("summary.html", extremes=extremes, means=means, zipped=zipped)
 
 
 #
@@ -189,7 +191,6 @@ def mean(xs):
 
 
 def combined_mean(e):
-    print(f"**** {json.dumps(e)}")
     return {"q": e["q"], "a": e["a"], "low": mean(e["low"]), "high": mean(e["high"])}
 
 
