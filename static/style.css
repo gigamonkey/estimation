@@ -6,13 +6,22 @@ body {
     width: 70%;
 }
 
-th, td { border: thin solid #eee; }
+th, td {
+    border: thin solid #eee;
+}
 
-td, th { padding: .5em; text-align: center; font-size: 14px; }
+td, th {
+    padding: .5em;
+    text-align: center;
+    font-size: 14px; }
 
-th { font-weight: 900; }
+th {
+    font-weight: 900;
+}
 
-td.q { padding: .5em; text-align: left; }
+td.q {
+    text-align: left;
+}
 
 h1 {
     font-size: 150%;
@@ -92,6 +101,10 @@ div.summary {
 div.summary p {
     padding-bottom: 1em;
     font-size: 24px;
+}
+
+div.summary p.estimators {
+    font-size: 18px;
 }
 
 div.summary h1 {

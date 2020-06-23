@@ -62,6 +62,11 @@ def format_percentage(n):
     return f"{round(100 * n)}%"
 
 
+@app.template_filter("plural")
+def plural(n, singular="", plural="s"):
+    return singular if n == 1 else plural
+
+
 #
 # Routes
 #
@@ -143,8 +148,8 @@ def summary(name):
     combined = combined_estimates(files)
     extremes = generate_results(None, None, [combined_extremes(e) for e in combined])
     means = generate_results(None, None, [combined_mean(e) for e in combined])
-    zipped = zip(extremes, means)
-    return render_template("summary.html", extremes=extremes, means=means, zipped=zipped)
+    n = len(files)
+    return render_template("summary.html", extremes=extremes, means=means, n=n)
 
 
 #
