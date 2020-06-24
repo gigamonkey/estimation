@@ -147,10 +147,11 @@ def done(name):
 def summary(name):
     files = quiz_result_files(name)
     combined = combined_estimates(files)
-    extremes = generate_results(None, None, [combined_extremes(e) for e in combined])
-    means = generate_results(None, None, [combined_mean(e) for e in combined])
+    extremes = generate_results(None, None, [combined_extremes(e) for e in combined["ranges"]])
+    means = generate_results(None, None, [combined_mean(e) for e in combined["ranges"]])
+    correct = combined["correct"]
     n = len(files)
-    return render_template("summary.html", extremes=extremes, means=means, n=n)
+    return render_template("summary.html", extremes=extremes, means=means, n=n, correct=correct)
 
 
 #
@@ -205,22 +206,38 @@ def combined_extremes(e):
 
 
 def combined_estimates(results):
-    combined = []
+    ranges = []
+    correct = []
     for r in results:
         with open(r) as f:
             data = json.load(f)["estimates"]
-            if not combined:
-                combined = [first_combined(e) for e in data]
+            if not ranges:
+                ranges = [first_range(e) for e in data]
             else:
-                for e, c in zip(data, combined):
+                for e, c in zip(data, ranges):
                     c["low"].append(e["low"])
                     c["high"].append(e["high"])
 
-    return combined
+            if not correct:
+                correct = [1 if captured_value(e) else 0 for e in data]
+            else:
+                for i, e in enumerate(data):
+                    if captured_value(e):
+                        correct[i] += 1
+
+    return {
+        "ranges": ranges,
+        "correct": correct,
+    }
 
 
-def first_combined(e):
+def first_range(e):
     return {"q": e["q"], "a": e["a"], "low": [e["low"]], "high": [e["high"]]}
+
+
+def captured_value(e):
+    return e["low"] <= e["a"] <= e["high"]
+
 
 
 def current_answer(answers, n):

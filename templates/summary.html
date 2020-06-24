@@ -11,7 +11,7 @@
       <div class="summary">
         <h1>Wisdom of crowds?</h1>
         <p>Extremes: {{ extremes.fraction_correct|percentage }} /
-        Average bounds: {{ means.fraction_correct|percentage }}</p>
+            Average bounds: {{ means.fraction_correct|percentage }}</p>
         <p class="estimators">{{n|number}} estimator{{n|plural}}.</p>
       </div>
       <table>
@@ -23,18 +23,20 @@
             <th>Averages</th>
             <th>Extremes good?</th>
             <th>Averages good?</th>
+            <th>Percent captured</th>
           </tr>
         </thead>
         <tbody>
-          {% for e, m in zip(extremes.estimates, means.estimates) %}
-          <tr>
-            <td class="q">{{ e.q }}</td>
-            <td>{{ e.a|number }}</td>
-            <td>{{ e.low|number }} to {{ e.high|number }}</td>
-            <td>{{ m.low|number }} to {{ m.high|number }}</td>
-            <td>{% if e.a < e.low %}Too high{% elif e.a <= e.high %}Yes{% else %}Too low{% endif %}</td>
-            <td>{% if m.a < m.low %}Too high{% elif m.a <= m.high %}Yes{% else %}Too low{% endif %}</td>
-          </tr>
+          {% for c, (e, m) in zip(correct, zip(extremes.estimates, means.estimates)) %}
+            <tr>
+              <td class="q">{{ e.q }}</td>
+              <td>{{ e.a|number }}</td>
+              <td>{{ e.low|number }} to {{ e.high|number }}</td>
+              <td>{{ m.low|number }} to {{ m.high|number }}</td>
+              <td>{% if e.a < e.low %}Too high{% elif e.a <= e.high %}Yes{% else %}Too low{% endif %}</td>
+              <td>{% if m.a < m.low %}Too high{% elif m.a <= m.high %}Yes{% else %}Too low{% endif %}</td>
+              <td>{{(c/n)|percentage}}</td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
